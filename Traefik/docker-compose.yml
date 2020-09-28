@@ -12,33 +12,61 @@ services:
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
+      - "--entrypoints.back.address=:4000"
+      - "--entrypoints.api.address=:8000"
       - "--certificatesresolvers.myresolver.acme.httpchallenge=true"
       - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
       #- "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
       - "--certificatesresolvers.myresolver.acme.email=nahuelcano@gmail.com"
-      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"      
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
     ports:
       - "80:80"
       - "443:443"
+      - "8000:8000"
       - "8080:8080"
+      - "4000:4000"
     volumes:
       - "./letsencrypt:/letsencrypt"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
-  whoami:
-    image: nacamza/githubactions
-    container_name: "nginx2"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.whoami.rule=Host(`docker1.viziongps.net`)"
-      - "traefik.http.routers.whoami.entrypoints=websecure"
-      - "traefik.http.routers.whoami.tls.certresolver=myresolver"
-
-  nginx1:
-    image: nacamza/githubactions
-    container_name: "nginx1"
+  frontend:
+    image: nacamza/yallacollectfron
+    expose: 
+      - "80"    
     labels:  
       - "traefik.enable=true"
-      - "traefik.http.routers.nginx1.rule=Host(`docker2.viziongps.net`)"
-      - "traefik.http.routers.nginx1.entrypoints=websecure"
-      - "traefik.http.routers.nginx1.tls.certresolver=myresolver"   
+      - "traefik.http.routers.frontend.rule=Host(`docker1.viziongps.net`)"
+      - "traefik.http.routers.frontend.entrypoints=websecure"
+      - "traefik.http.routers.frontend.tls.certresolver=myresolver"   
+
+  backend:
+    image: yallacollectback
+    expose: 
+      - "4000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.backend.rule=Host(`docker1.viziongps.net`)"
+      - "traefik.http.routers.backend.entrypoints=back"
+      - "traefik.http.routers.backend.tls.certresolver=myresolver"
+      - "traefik.http.services.backend.loadbalancer.server.port=4000"
+    volumes:
+      - /home/yallacollect/upload_excel_files:/uploads
+      - /home/yallacollect/logos:/logos      
+
+
+  apiexpress:
+    image: yallacollectapiexpress
+    expose: 
+      - "8000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.apiexpress.rule=Host(`docker1.viziongps.net`)"
+      - "traefik.http.routers.apiexpress.entrypoints=api"
+      - "traefik.http.routers.apiexpress.tls.certresolver=myresolver"
+      - "traefik.http.services.apiexpress.loadbalancer.server.port=8000"
+    volumes:
+      - /home/yallacollect/upload_excel_files:/uploads
+      - /home/yallacollect/logos:/logos    
+
+  daemon:
+    image: yallacollectdaemon
