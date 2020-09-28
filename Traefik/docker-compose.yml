@@ -30,7 +30,7 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
   frontend:
-    image: nacamza/yallacollectfron
+    image: dockerfrontend
     expose: 
       - "80"    
     labels:  
@@ -40,7 +40,7 @@ services:
       - "traefik.http.routers.frontend.tls.certresolver=myresolver"   
 
   backend:
-    image: yallacollectback
+    image: dockerbackend
     expose: 
       - "4000"
     labels:
@@ -55,7 +55,7 @@ services:
 
 
   apiexpress:
-    image: yallacollectapiexpress
+    image: dockerapiexpress
     expose: 
       - "8000"
     labels:
@@ -68,5 +68,3 @@ services:
       - /home/yallacollect/upload_excel_files:/uploads
       - /home/yallacollect/logos:/logos    
 
-  daemon:
-    image: yallacollectdaemon
