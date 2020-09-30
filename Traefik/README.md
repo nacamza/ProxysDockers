@@ -54,6 +54,10 @@ Montamos un volumen donde se va a guardar los certificados y el socket Docker pa
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
       - "./letsencrypt:/letsencrypt"
 ````
+Si hay algún inconveniente con los certificados se envía un mail a:
+````
+      - "--certificatesresolvers.myresolver.acme.email=mail@gmail.com"
+````
 ### Entrypoints
 Los entrypoints son utilizados para indicarle a traefik a que Docker tiene que direccionar el tráfico teniendo en cuenta el puerto por el que entra la consulta. De esta manera podemos redireccionar varios Docker con un mismo DNS.
 
