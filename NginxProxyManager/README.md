@@ -4,7 +4,7 @@ A diferencia de los otros proxys, este sirve para direccionar el tráfico fuera 
 Nginx va a guardar la configuración en una bd 
 
 ## Configurar proxy
-Para configurar el proxy entramos por el puerto <ip>:81
+Para configurar el proxy entramos por el puerto < ip >:81
 ````
 User: admin@example.com
 Pass: changeme
