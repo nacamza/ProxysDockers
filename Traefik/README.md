@@ -110,6 +110,8 @@ Vamos a explicar cómo dirigimos el tráfico al backend
       - "traefik.http.routers.backend.rule=Host(`midominio.com`)"
       - "traefik.http.routers.backend.entrypoints=back"
       - "traefik.http.routers.backend.tls.certresolver=myresolver"
+      # Enable gzip compression
+      - "traefik.http.middlewares.test-compress.compress=true"      
  ````     
  primero debemos indicar si el Docker va a estar manejado por traefik
  ````
@@ -125,10 +127,19 @@ también le indicamos que certificado utilizar
 ````
       - "traefik.http.routers.apiexpress.tls.certresolver=myresolver"
 ````
-y por último le indicamos que puerto está exponiendo el Docker
+le indicamos que puerto está exponiendo el Docker
 ````
       - "traefik.http.services.apiexpress.loadbalancer.server.port=8000"
 ````  
+y por último le indicamos si tiene que comprimir la respuesta con GZIP
+````
+      - "traefik.http.middlewares.test-compress.compress=true"
+````
+Las respuestas se comprimen cuando:
+- El cuerpo de la respuesta es mayor que 1400bytes.
+- El ``Accept-Encodin`` gencabezado de la solicitud contiene ``gzip``.
+- La respuesta aún no está comprimida, es decir, el Content-Encodingencabezado de respuesta aún no está configurado.
+
 Con estas **labels** queda configurado el backend, de esta manera cuando accedamos a **https://midominio.com:4000/** vamos a acceder al backend con certificados https.
 ## Comando útiles de docker compose
 Dejo unos comandos útiles de Docker compose, estos comando tienen que ejecutarse en el directorio en donde se encuentra el archivo Docker-compose.yml 
