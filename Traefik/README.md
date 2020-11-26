@@ -5,7 +5,7 @@ Vamos a crear 4 contenedores:
 - traefik: es el encargado de manejar el proxy inverso
 - frontend: es un 
 - backend: es una aplicación escuchando en el puerto 4000
-- apiexpress: es una api escuchando en el puerto 8000
+- api: es una api escuchando en el puerto 8000
 - daemon: es una api que que no expone ningún puerto
 
 ## Configuración Traefik
