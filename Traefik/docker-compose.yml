@@ -54,6 +54,8 @@ services:
       - "traefik.http.routers.backend.entrypoints=back"
       - "traefik.http.routers.backend.tls.certresolver=myresolver"
       - "traefik.http.services.backend.loadbalancer.server.port=4000"
+      # Enable gzip compression
+      - "traefik.http.middlewares.test-compress.compress=true"      
     volumes:
       - /home/yallacollect/upload_excel_files:/uploads
       - /home/yallacollect/logos:/logos      
