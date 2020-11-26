@@ -23,6 +23,11 @@ Vamos a ver la configuración de traefik para nuestra aplicación
       - "--entrypoints.websecure.address=:443"
       - "--entrypoints.back.address=:4000"
       - "--entrypoints.api.address=:8000"
+      
+      - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
+      - "--entrypoints.web.http.redirections.entrypoint.permanent=true" 
+      
       - "--certificatesresolvers.myresolver.acme.httpchallenge=true"
       - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
       #- "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
@@ -43,6 +48,10 @@ vamos a explicar las partes importantes es esta configuración
 Vamos a habilitar la encriptación de nuestros servicios y vamos a dirigir el tráfico HTTP del puerto 80 al 443 con HTTPS 
 ````
     command:
+      - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
+      - "--entrypoints.web.http.redirections.entrypoint.permanent=true" 
+      
       - "--certificatesresolvers.myresolver.acme.httpchallenge=true"
       - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
       - "--certificatesresolvers.myresolver.acme.email=mail@gmail.com"
