@@ -141,6 +141,9 @@ Las respuestas se comprimen cuando:
 - La respuesta aún no está comprimida, es decir, el Content-Encodingencabezado de respuesta aún no está configurado.
 
 Con estas **labels** queda configurado el backend, de esta manera cuando accedamos a **https://midominio.com:4000/** vamos a acceder al backend con certificados https.
+
+### [Configuracion Abanzada](https://blog.thesparktree.com/traefik-advanced-config)
+
 ## Comando útiles de docker compose
 Dejo unos comandos útiles de Docker compose, estos comando tienen que ejecutarse en el directorio en donde se encuentra el archivo Docker-compose.yml 
 ### Ejecutar docker compose 
