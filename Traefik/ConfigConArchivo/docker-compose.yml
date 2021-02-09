@@ -1,0 +1,48 @@
+version: "3"
+
+services:
+
+  traefik:
+    image: "traefik:v2.2"
+    container_name: "traefik"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8000:8000"
+      - "4000:4000"
+    volumes:
+      - "./letsencrypt:/letsencrypt"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - ./conf/traefik.yaml:/etc/traefik/traefik.yaml 
+      - ./conf/dynamic.yaml:/etc/traefik/dynamic/dynamic.yaml 
+
+  frontend:
+    image: "traefik/whoami"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=Host(`mergcloud.duckdns.org`)"
+      - "traefik.http.routers.frontend.entrypoints=websecure"
+      - "traefik.http.routers.frontend.tls.certresolver=myresolver"
+      ## Seguridad
+      - "traefik.http.routers.frontend.middlewares=auth"
+      ## Generar user/pass "https://hostingcanada.org/htpasswd-generator/"
+      - "traefik.http.middlewares.auth.basicauth.users=ncano:{SHA}jkUa6APiSmiQwgp/s9BTu4h04F0="
+
+
+  backend:
+    image: "traefik/whoami"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.backend.rule=Host(`mergcloud.duckdns.org`)"
+      - "traefik.http.routers.backend.entrypoints=back"
+      - "traefik.http.routers.backend.tls.certresolver=myresolver"
+      - "traefik.http.middlewares.backend.compress=true"
+
+
+  apiexpress:
+    image: "traefik/whoami"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.apiexpress.rule=Host(`mergcloud.duckdns.org`)"
+      - "traefik.http.routers.apiexpress.entrypoints=apiexpress"
+      - "traefik.http.routers.apiexpress.tls.certresolver=myresolver"  
