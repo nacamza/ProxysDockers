@@ -120,20 +120,20 @@ Vamos a explicar cómo dirigimos el tráfico al backend
  ````
 luego le indicamos con que DNS y puerto se acede al Docker
 ````
-     - "traefik.http.routers.apiexpress.rule=Host(`midominio.com `)"
-     - "traefik.http.routers.apiexpress.entrypoints=api"
+     - "traefik.http.routers.backend.rule=Host(`midominio.com `)"
+     - "traefik.http.routers.backend.entrypoints=api"
 ````
 también le indicamos que certificado utilizar
 ````
-      - "traefik.http.routers.apiexpress.tls.certresolver=myresolver"
+      - "traefik.http.routers.backend.tls.certresolver=myresolver"
 ````
 le indicamos que puerto está exponiendo el Docker
 ````
-      - "traefik.http.services.apiexpress.loadbalancer.server.port=8000"
+      - "traefik.http.services.backend.loadbalancer.server.port=8000"
 ````  
 y por último le indicamos si tiene que comprimir la respuesta con GZIP
 ````
-      - "traefik.http.middlewares.test-compress.compress=true"
+      - "traefik.http.middlewares.backend.compress=true"
 ````
 Las respuestas se comprimen cuando:
 - El cuerpo de la respuesta es mayor que 1400bytes.
@@ -142,8 +142,15 @@ Las respuestas se comprimen cuando:
 
 Con estas **labels** queda configurado el backend, de esta manera cuando accedamos a **https://midominio.com:4000/** vamos a acceder al backend con certificados https.
 
+### Si queremos seguridad (User y Pass) agregamos
+````
+      ## Seguridad
+      - "traefik.http.routers.backend.middlewares=auth"
+      ## Generar user/pass "https://hostingcanada.org/htpasswd-generator/"
+      - "traefik.http.middlewares.auth.basicauth.users=ncano:{SHA}jkUa6APiSmiQwgp/s9BTu4h04F0="
+````
+con esto nos pide user y pass para acceder
 ### [Configuracion Abanzada](https://blog.thesparktree.com/traefik-advanced-config)
-
 ## Comando útiles de docker compose
 Dejo unos comandos útiles de Docker compose, estos comando tienen que ejecutarse en el directorio en donde se encuentra el archivo Docker-compose.yml 
 ### Ejecutar docker compose 
