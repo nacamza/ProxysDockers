@@ -24,6 +24,9 @@ Vamos a ver la configuración de traefik para nuestra aplicación
       - "--entrypoints.back.address=:4000"
       - "--entrypoints.api.address=:8000"
       
+      # Agregamos configuracion dinamica
+      - "--providers.file.directory=/etc/traefik/dynamic" 
+      
       - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
       - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
       - "--entrypoints.web.http.redirections.entrypoint.permanent=true" 
@@ -42,6 +45,8 @@ Vamos a ver la configuración de traefik para nuestra aplicación
     volumes:
       - "./letsencrypt:/letsencrypt"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      # Montamos archivo de configuracion dinamica
+      - ./conf/dynamic.yaml:/etc/traefik/dynamic/dynamic.yaml 
 ````
 vamos a explicar las partes importantes es esta configuración
 ### HTTPS automático con Let's Encrypt
