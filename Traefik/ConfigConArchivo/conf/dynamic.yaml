@@ -1,3 +1,4 @@
+## Configuracion de seguridad (TLS1.2 minimo)
 tls:
   options:
     default:
@@ -16,3 +17,16 @@ tls:
       curvePreferences:
         - CurveP521
         - CurveP384
+
+## Redirecciono fuera la red docker el Host(`server.nginx.app.test`) con el servicio "apache-service" a la url: "http://127.0.0.1" 
+http:
+  routers:
+    apache:
+      rule: "Host(`server.nginx.app.test`)"
+      service: apache-service
+
+  services:
+    apache-service:   
+      loadBalancer:
+        servers:
+          - url: "http://127.0.0.1"
