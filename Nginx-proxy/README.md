@@ -17,6 +17,7 @@ version: '3.1'
 	      - vhostd:/etc/nginx/vhost.d
 	      - html:/usr/share/nginx/html
 	      
+	      #Certificados pagos
 	      - config-nginx.conf:/etc/nginx/conf.d/config-nginx.conf
 	      - certs:/etc/nginx/certs
 	    labels:
