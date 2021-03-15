@@ -16,6 +16,9 @@ version: '3.1'
 	      - certs:/etc/nginx/certs:ro
 	      - vhostd:/etc/nginx/vhost.d
 	      - html:/usr/share/nginx/html
+	      
+	      - config-nginx.conf:/etc/nginx/conf.d/config-nginx.conf
+	      - certs:/etc/nginx/certs
 	    labels:
 	      - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
 	
@@ -32,6 +35,16 @@ version: '3.1'
 	      - /var/run/docker.sock:/var/run/docker.sock:ro
 ````
 En estos Dockers esta lo necesario para que función el proxy inverso con letsencrypt
+
+Si queremos pasar certificados pagos, tenemos que tener un archivo de configuracion ``config-nginx.conf``
+````
+	    volumes:
+	      - config-nginx.conf:/etc/nginx/conf.d/config-nginx.conf
+````
+y mantamos los certificados en 
+````
+	      - /certs:/etc/nginx/certs
+```` 
 ### Configuracion dockers
 ````
   nginx1:
