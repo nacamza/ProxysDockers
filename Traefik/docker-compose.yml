@@ -22,7 +22,7 @@ services:
       - "--certificatesresolvers.myresolver.acme.httpchallenge=true"
       - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
       #- "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
-      - "--certificatesresolvers.myresolver.acme.email=nahuelcano@gmail.com"
+      - "--certificatesresolvers.myresolver.acme.email=mail@gmail.com"
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
     ports:
       - "80:80"
@@ -50,15 +50,15 @@ services:
       - "4000"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.backend.rule=Host(`docker1.viziongps.net`)"
+      - "traefik.http.routers.backend.rule=Host(`docker1.net`)"
       - "traefik.http.routers.backend.entrypoints=back"
       - "traefik.http.routers.backend.tls.certresolver=myresolver"
       - "traefik.http.services.backend.loadbalancer.server.port=4000"
       # Enable gzip compression
       - "traefik.http.middlewares.test-compress.compress=true"      
     volumes:
-      - /home/yallacollect/upload_excel_files:/uploads
-      - /home/yallacollect/logos:/logos      
+      - /home/upload_excel_files:/uploads
+      - /home/logos:/logos      
 
 
   apiexpress:
@@ -67,11 +67,11 @@ services:
       - "8000"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.apiexpress.rule=Host(`docker1.viziongps.net`)"
+      - "traefik.http.routers.apiexpress.rule=Host(`docker1.net`)"
       - "traefik.http.routers.apiexpress.entrypoints=api"
       - "traefik.http.routers.apiexpress.tls.certresolver=myresolver"
       - "traefik.http.services.apiexpress.loadbalancer.server.port=8000"
     volumes:
-      - /home/yallacollect/upload_excel_files:/uploads
-      - /home/yallacollect/logos:/logos    
+      - /home/upload_excel_files:/uploads
+      - /home/logos:/logos    
 
