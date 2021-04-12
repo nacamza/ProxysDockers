@@ -17,7 +17,13 @@ tls:
       curvePreferences:
         - CurveP521
         - CurveP384
-
+## Para usar certificados pagos
+tls:
+  certificates:
+    - certFile: /cert/yallacollect.crt
+      keyFile:  /cert/yallacollect.key
+      stores:
+        - default 
 ## Redirecciono fuera la red docker el Host(`server.nginx.app.test`) con el servicio "apache-service" a la url: "http://127.0.0.1" 
 http:
   routers:
