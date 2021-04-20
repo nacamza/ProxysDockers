@@ -47,6 +47,10 @@ Vamos a ver la configuración de traefik para nuestra aplicación
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
       # Montamos archivo de configuracion dinamica
       - ./conf/dynamic.yaml:/etc/traefik/dynamic/dynamic.yaml 
+    labels:
+      # compress whit gzip
+      - "traefik.http.routers.traefik.middlewares=traefik-compress"
+      - "traefik.http.middlewares.traefik-compress.compress=true"   
 ````
 vamos a explicar las partes importantes es esta configuración
 ### HTTPS automático con Let's Encrypt
@@ -138,7 +142,9 @@ le indicamos que puerto está exponiendo el Docker
 ````  
 y por último le indicamos si tiene que comprimir la respuesta con GZIP
 ````
-      - "traefik.http.middlewares.backend.compress=true"
+      #compress
+      - "traefik.http.middlewares.frontendtest_compress.compress=true" 
+      - "traefik.http.routers.frontendtest.middlewares=frontendtest_compress"
 ````
 Las respuestas se comprimen cuando:
 - El cuerpo de la respuesta es mayor que 1400bytes.
