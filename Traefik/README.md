@@ -116,9 +116,17 @@ Vamos a explicar cómo dirigimos el tráfico al backend
       - "4000"
     labels:
       - "traefik.enable=true"
+      
+      # Entrada por el puerto :4000
       - "traefik.http.routers.backend.rule=Host(`midominio.com`)"
       - "traefik.http.routers.backend.entrypoints=back"
       - "traefik.http.routers.backend.tls.certresolver=myresolver"
+      
+      # Entrada por el puerto :443 y PathPrefix /back
+      - "traefik.http.routers.backend-path.rule=Host(`midominio.com`) && PathPrefix(`/back`)"
+      - "traefik.http.routers.backend-path.entrypoints=websecure"
+      - "traefik.http.routers.backend-path.tls.certresolver=myresolver"  
+          
       # Enable gzip compression
       - "traefik.http.middlewares.backend_compress.compress=true" 
       - "traefik.http.routers.backend.middlewares=backend_compress"     
@@ -152,6 +160,17 @@ Las respuestas se comprimen cuando:
 - El ``Accept-Encodin`` gencabezado de la solicitud contiene ``gzip``.
 - La respuesta aún no está comprimida, es decir, el Content-Encodingencabezado de respuesta aún no está configurado.
 
+y por ultimo, podemos generar otro router, cambiando al path o puerto con el que se accede
+```
+      # Entrada por el puerto :443 y PathPrefix /back
+      - "traefik.http.routers.backend-path.rule=Host(`midominio.com`) && PathPrefix(`/back`)"
+      - "traefik.http.routers.backend-path.entrypoints=websecure"
+      - "traefik.http.routers.backend-path.tls.certresolver=myresolver"  
+```
+donde:
+- Path: se usa cuando la url es fija
+- PathPrefix: se usa cuando despues del path se puede direccionar
+ 
 Con estas **labels** queda configurado el backend, de esta manera cuando accedamos a **https://midominio.com:4000/** vamos a acceder al backend con certificados https.
 
 ### Si queremos seguridad (User y Pass) agregamos
