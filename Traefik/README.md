@@ -48,7 +48,7 @@ Vamos a ver la configuración de traefik para nuestra aplicación
       # Montamos archivo de configuracion dinamica
       - ./conf/dynamic.yaml:/etc/traefik/dynamic/dynamic.yaml 
     labels:
-      # compress whit gzip
+      # compress whith gzip
       - "traefik.http.routers.traefik.middlewares=traefik-compress"
       - "traefik.http.middlewares.traefik-compress.compress=true"   
 ````
@@ -120,7 +120,8 @@ Vamos a explicar cómo dirigimos el tráfico al backend
       - "traefik.http.routers.backend.entrypoints=back"
       - "traefik.http.routers.backend.tls.certresolver=myresolver"
       # Enable gzip compression
-      - "traefik.http.middlewares.test-compress.compress=true"      
+      - "traefik.http.middlewares.backend_compress.compress=true" 
+      - "traefik.http.routers.backend.middlewares=backend_compress"     
  ````     
  primero debemos indicar si el Docker va a estar manejado por traefik
  ````
@@ -142,9 +143,9 @@ le indicamos que puerto está exponiendo el Docker
 ````  
 y por último le indicamos si tiene que comprimir la respuesta con GZIP
 ````
-      #compress
-      - "traefik.http.middlewares.frontendtest_compress.compress=true" 
-      - "traefik.http.routers.frontendtest.middlewares=frontendtest_compress"
+      # Enable gzip compression
+      - "traefik.http.middlewares.backend_compress.compress=true" 
+      - "traefik.http.routers.backend.middlewares=backend_compress"
 ````
 Las respuestas se comprimen cuando:
 - El cuerpo de la respuesta es mayor que 1400bytes.
