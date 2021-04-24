@@ -126,14 +126,15 @@ Vamos a explicar cómo dirigimos el tráfico al backend
       - "traefik.http.routers.backend-path.rule=Host(`midominio.com`) && PathPrefix(`/back`)"
       - "traefik.http.routers.backend-path.entrypoints=websecure"
       - "traefik.http.routers.backend-path.tls.certresolver=myresolver"  
-
       # Podemos eliminar el path /back mediante prefix
       - "traefik.http.middlewares.delete_path.stripprefix.prefixes=true" 
       - "traefik.http.routers.backend-path.middlewares=delete_path"     
           
-      # Enable gzip compression
+      # Enable gzip compression y seguridad a routers backend
       - "traefik.http.middlewares.backend_compress.compress=true" 
-      - "traefik.http.routers.backend.middlewares=backend_compress"     
+      - "traefik.http.routers.backend.middlewares=backend_compress,auth"
+      # Generar user/pass "https://hostingcanada.org/htpasswd-generator/"
+      - "traefik.http.middlewares.auth.basicauth.users=ncano:{SHA}jkUa6APiSmiQwgp/s9BTu4h04F0="    
  ````     
  primero debemos indicar si el Docker va a estar manejado por traefik
  ````
