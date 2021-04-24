@@ -126,6 +126,10 @@ Vamos a explicar cómo dirigimos el tráfico al backend
       - "traefik.http.routers.backend-path.rule=Host(`midominio.com`) && PathPrefix(`/back`)"
       - "traefik.http.routers.backend-path.entrypoints=websecure"
       - "traefik.http.routers.backend-path.tls.certresolver=myresolver"  
+
+      # Podemos eliminar el path /back mediante prefix
+      - "traefik.http.middlewares.delete_path.stripprefix.prefixes=true" 
+      - "traefik.http.routers.backend-path.middlewares=delete_path"     
           
       # Enable gzip compression
       - "traefik.http.middlewares.backend_compress.compress=true" 
@@ -149,10 +153,12 @@ le indicamos que puerto está exponiendo el Docker
 ````
       - "traefik.http.services.backend.loadbalancer.server.port=8000"
 ````  
-y por último le indicamos si tiene que comprimir la respuesta con GZIP
+le indicamos si tiene que comprimir la respuesta con GZIP
 ````
       # Enable gzip compression
+      # Configuramos el middlewar backend_compress
       - "traefik.http.middlewares.backend_compress.compress=true" 
+      # le indicamos que aplique el middlewar backend_compress a routers backend
       - "traefik.http.routers.backend.middlewares=backend_compress"
 ````
 Las respuestas se comprimen cuando:
